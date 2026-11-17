@@ -312,10 +312,12 @@ class QtEngineDropdownTests(unittest.TestCase):
         from nspb_qt import model, ui
 
         m = model.Model()
-        win = ui.MainWindow(m, perform_startup_checks=False)
+        with mock.patch.object(m, 'check_deps', lambda: None):
+            win = ui.MainWindow(m)
+            win._init_timer.stop()
         self.addCleanup(win.close)
         self.assertFalse(hasattr(win, 'sub_label'))
-        self.assertEqual(win.brand_label.text(), 'NX2Apple')
+        self.assertEqual(win.title_label.text(), 'NX2Apple')
 
         popup = win._ensure_engine_popup()
         win._refresh_engine_popup()
