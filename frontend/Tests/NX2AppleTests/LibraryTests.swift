@@ -131,7 +131,7 @@ import NXModel
         window.setContentSize(NSSize(width: 900, height: 680))
         RunLoop.main.run(until: Date().addingTimeInterval(0.3))
         let targets = try XCTUnwrap(pad.frames["main"])
-        for id in ["tab.library", "tab.builds", "tab.settings", "top.build"] {
+        for id in ["tab.library", "tab.builds", "tab.saves", "tab.settings", "top.build"] {
             let frame = try XCTUnwrap(targets.first { $0.id == id }?.frame, id)
             let wide = try XCTUnwrap(singleLine.first { $0.id == id }?.frame, id)
             XCTAssertLessThanOrEqual(frame.height, wide.height + 1, "The top bar should fit a single line: " + id)
@@ -139,6 +139,8 @@ import NXModel
         pad.show(default: "tab.library")
         pad.horizontal(1)
         XCTAssertEqual(pad.focused, "tab.builds")
+        pad.horizontal(1)
+        XCTAssertEqual(pad.focused, "tab.saves")
         pad.horizontal(1)
         XCTAssertEqual(pad.focused, "tab.settings")
     }

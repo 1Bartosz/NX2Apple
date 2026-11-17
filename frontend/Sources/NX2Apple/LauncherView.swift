@@ -205,6 +205,10 @@ struct LauncherView: View {
                             .transition(reduceMotion ? .opacity : .move(edge: .trailing).combined(with: .opacity))
                     }
                 }
+            } else if page == .saves {   // every game's save (SavesPage.swift, #1079)
+                SavesPage(library: library, saveSettings: stores.saveSettings, players: stores.players, repo: stores.repo.path,
+                          openSaves: { savesFor = $0 })
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 CardPages(settings: page == .settings, build: m, updates: updates, repo: repo, engine: engine, dependencies: stores.dependencies, devices: devices, queue: stores.queue, transfers: stores.transfers, onSelectGames: { selectingGames = true },
                           sticks: stores.sticks, saveSettings: stores.saveSettings, players: stores.players,
@@ -213,7 +217,7 @@ struct LauncherView: View {
                           padMerge: Binding(get: { controls.padMerge }, set: { setPadMerge($0) }), buildFiles: stores.buildFiles, buildingID: m.running ? activeBuildID : nil, onBuildFileDetails: { freeSpaceFor = $0 }, settingsCategory: $settingsCategory)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            if m.running && page == .settings { activityBar }
+            if m.running && (page == .settings || page == .saves) { activityBar }
         }
         .padScope("main", padFocus)
         .environmentObject(padFocus)
